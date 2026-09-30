@@ -1,0 +1,163 @@
+
+
+
+\vspace{.5cm}
+\exer{Démarrer avec Antconc} % : 20.000 lieues sous les mers (Jules Verne)}
+\vspace{.5cm}
+
+
+ Allez regarder sur \url{https://www.gutenberg.org/} où il y a un grand nombre de livres librement disponibles. 
+ Recherchez le livre de Jules Verne 20.000 lieues sous les mersi (réfléchissez à comment vous requêtez!), enregistrez la version au format \texttt{txt} (utf-8) dans un dossier corpus.
+
+\begin{enumerate}
+\item Ouvrez Antconc % (icône dans votre dossier "outils")
+\item A partir du Menu \textsc{File}, chargez le fichier précédemment téléchargé (sélectionnez \textsc{Quick Corpus})
+\end{enumerate}
+
+ Nous allons tout d'abord utiliser l'onglet \textsc{KWIC} d'Antconc.
+ Faites quelques recherches avec des mots de votre choix (barre de recherche en bas de la fenêtre).
+ Ensuite, cherchez les mots suivants :
+\begin{itemize}
+  \item Nautilus
+  \item capitaine
+  \item Anderson
+  \item Nemo
+\end{itemize}
+ Vous pouvez voir que les résultats suivent un certain ordre, trouvez lequel en parcourant les résultats de la fenêtre centrale.
+ Cette fenêtre montre les usages d'un mot en contexte.
+ On parle de KWIC (Key Word In Context) que l'on oppose à KWOC (Key Word Out of Context), allez sur Wikipédia pour avoir une description de ces deux concepts.
+ Testez les options du premier menu déroulants de \texttt{Sort Options} pour trier selon les mots du contexte gauche ou droit ou une combinaison des deux.
+
+Observez plus attentivement les contextes (gauche et droit) d'apparition de Nemo. %Que pouvez vous en dire ? (\textbf{\textcolor{blue}{réponse à indiquer sur Moodle}}).
+
+ Si nous regardons plus en détails autour de la barre de recherche, nous pouvons voir différentes options. Observez le comportement de l'option \textsc{Case} avec les mots "Nemo" et "Capitaine".
+
+\vspace{.5cm}
+\exer{Quelques statistiques} 
+\vspace{.5cm}
+
+ Allez sur l'onglet \textsc{Word} pour obtenir quelques statistiques sur notre document.
+ Cliquez sur \texttt{start} pour faire apparaître la liste de tous les mots du texte par ordre décroissant d'effectif (\textit{frequency}).
+ 
+ Utilisez maintenant la fonction \textsc{Invert order} pour observer les hapaxs de ce texte (mots qui n'ont qu'une occurrence). Décochez la case pour retrouver l'ordre précédent.
+
+% Pour sauvegarder ce résultat au format \texttt{txt}, allez dans \textsc{File} et cliquez sur \textsc{Save Current Tab Results}.
+
+ %Ouvrez ce fichier avec un \textbf{éditeur de texte} (pas un traitement de texte !). Copiez-collez les 100 mots les plus fréquents dans une feuille de calcul \textsc{Excel} ou \textsc{Calc}.
+% Utilisez la fonctionnalité \textit{collage spécial}, accessible notamment par le menu contextuel (clic-droit), pour obtenir un tableau avec plusieurs colonnes bien marquées.
+
+\exer{Expressions régulières}
+
+Naviguez dans le menu \textsc{Settings}, puis \textsc{Global Settings} et enfin dans la catégorie \textsc{Searches} (fenêtre de gauche). Observez la signification des différents caractères qui y sont présentés.
+À l'aide de ces caractères, nous pouvons effectuer des recherches portant non pas sur une forme (un mot, un groupe de mots) mais un ensemble de variantes d'un mot ou d'un groupe de mots en jouant sur leurs caractéristiques communes.
+
+À l'aide de ces caractères, recherchez les les mots qui \dots
+
+\begin{enumerate}
+    \item \dots finissent par "able" ?
+    \item \dots finissent par "ible" ?
+    \item \dots commencent par "anti". Parmi eux, quels sont les mots qui utilisent le préfixe "anti-" dans le sens "contre/à l'opposé" ?
+    \item \dots commencent par "pré" et qui finissent par "ment" ? %\moodle{(Questions 1 et 2)}
+\end{enumerate}
+
+ Ce que vous utilisez ici se nomme des expressions régulières, allez voir sur \textsc{Wikipedia} la section "Opérateurs de base" de l'article "Expressions régulières" pour vous informer sur ce sujet.
+
+
+ Une expression régulière suit des ``règles'', on part donc d'un certain nombre d'observations pour essayer d'expliquer à la machine ce que l'on recherche. En effet, rechercher chaque cas à la main peut s'avérer très fastidieux.
+
+ On va chercher à récupérer \textbf{toutes les dates} mentionnées dans les textes.
+ Toujours avec le même corpus de Jules Verne, on va regarder comment sont formées les noms de dates que l'on est amené à trouver (pensez à garder cochée la case regexp dans \textsc{Antconc}, disponible en bas de chaque onglet).
+
+ Pour démarrer, on va supposer que toutes les dates comportent une année avec un  ``1'', on cherche donc le caractère \texttt{1}. \textbf{Si vous n'avez aucun résultat c'est que le corpus est mal tokénisé.} Solution en note de bas de page \footnote{ Ajouter la définition des nombres au sein de votre corpus en recréant votre corpus : 
+File $>$Open Corpus Manager $>$ Raw Files $>$ Indexer $>$ Show Token Definition Settings $>$ cochez ``numbers'' et cliquez sur le bouton ``create``. Vous aurez un nouveau target corpus tout prêt}
+% File > Open Corpus Manager > Raw Files > Indexer, Encoding, Token Definition, Row Processor > Show Token Definition Settings > cochez ``numbers''
+.
+
+ On a évidemment trop de résultats, on affine donc par étapes~:
+\begin{itemize}
+  \item En se disant que la plupart des dates sont au 19ème siècle, on cherche donc: \texttt{18}
+  \item On a des résultats mais on a encore du \textbf{bruit}\footnote{Au sens de bruit documentaire, c'est à dire des résultats ``en trop''} : 18 août, page 184 \dots
+  \item On peut raffiner en disant que l'on recherche des suites de 4 chiffres 
+  \item A partir de la page Wikipedia (ou du CM) trouvez comment écrire une expression régulières qui recherche 4 chiffres consécutifs : une liste des chiffres possibles (avec les crochets) et en limitant le nombre d'occurrences à 4 (avec les accolades)
+  \item Cherchez maintenant toutes les années précédées du mot ``janvier''
+  \item En utilisant les parenthèses et la barre verticale cherchez toutes les années précédeés de janvier ou février.
+  \item génralisez à tous les mois
+  \item Essayez maintenant de détecter toutes les dates complètes de la forme suivante : nombre + mois + année quand elle est présente, par exemple :
+  \begin{itemize}
+    \item 14 janvier 1862 ; 16 janvier ; 30 janvier 1805 \dots
+  \end{itemize}
+%  \item \textbf{Déposez votre expression régulière sur\textcolor{blue}{Moodle}}
+\end{itemize}
+
+Utilisez votre expression régulière pour établir une chronologie des évènements dans chaque livre (re-séparez donc le corpus pour travailler texte par texte). Déposez la pour chaque texte sur Moodle avec un évènement par ligne (dans l'ordre de leur apprition dans le texte) . Quelque chose sous la forme :
+\begin{itemize}
+	\item Date1 avec contexte  de l'évènement 1 (la phrase ou le contexte d'apparition) %, la désambiguïsation du Pronom entre guillemets quand c'est nécessaire)
+  \item Date2 avec description de l'évènement 2\dots
+  \item Par exemple (dans 5 semaines en ballon):
+  \begin{description}
+    \item[14 janvier 1862] : Il y avait une grande affluence d'auditeurs, le 14 janvier 1862, à la séance de la Société royale géographique de Londres, Waterloo place, 3
+    \item[16 janvier] : Le lendemain, dans son numéro du 16 janvier, le Daily Telegraph publiait un article ainsi conçu:
+    \item[30 janvier 1805] : il \{Mungo-Park\} repart le 30 janvier 1805 avec son beau-frère Anderson, Scott le dessinateur et une troupe d'ouvriers.
+  \end{description}
+\end{itemize}
+
+\vspace{3em}
+% \moodle{- Donnez un exemple pour lequel cette détection d'``évènement'' pourrait servir à une analyse littéraire ou pour une analyse linguistique}
+
+%\textbf{Sur Moodle, donnez le résultat pour chacun des textes (pensez à séparer le corpus pour traiter chaque texte séparément) }.
+%
+%\textcolor{blue}{Dernière question sur Moodle: \textbf{donner un exemple pour lequelcette détection d'``évènement'' pourrait servir à une analyse littéraire ou pour une analyse linguistique}}
+%Dernière question sur moodle\textbf{v\textcolor{blue}y{Répondre sur Moodle à la question : quelle application peut-on faire des évènements qui sont ainsi détectés}} d'un point
+
+%Dernière question sur moodle\textbf{\textcolor{blue}{Répondre sur Moodle à la question : quelle application peut-on faire des évènements qui sont ainsi détectés}} d'un point
+%Essayez de trouver une expression régulière pour extraire les noms de lieux. Lequel des 3 textes en compte le plus ?
+
+\vspace{.2cm}
+\exer{Spécificités de corpus}
+\vspace{.2cm}
+
+Nous allons ici utiliser \textsc{Antconc} afin de trouver des mots spécifiques à un corpus donné (qui pourraient être de bons mots-clés).
+Dé-sélectionnez tous les fichiers de la colonne de gauche (menu \textsc{File} puis \textsc{Clear All Tools And Files}).
+
+\begin{itemize}
+    \item Aller dans le menu \textsc{File} puis \textsc{Open Corpus Manager}.
+	\item Sélectionnez \texttt{Raw File(s)} et entrez le nom de votre premier corpus.
+	\item Cliquez sur \texttt{Add File(s)} et sélectionnez "Vingt milles lieues sous les mers".
+	\item Ensuite, donnez lui le nom "20000\_lieues" (grâce au champ Corpus name) et cliquez sur \texttt{Create}. Vous avez créé un corpus contenant "Vingt milles lieues sous les mers". Ce sera notre corpus dit "Target", celui sur lequel on effectue notre analyse. 
+	\item Faites de même (\texttt{Raw File(s)} puis \texttt{Add File(s)}) pour créer un nouveau corpus qui contiendra les deux autres ouvrages ("Cinq Semaines en Ballon" et "Voyage au Centre de la Terre"), ce sera notre corpus de référence, nommez le "reference". 
+	\item En haut, pour l'option \texttt{Corpus Source}, cochez "Corpus Database". Vous devriez voir vos deux corpus créés sous User (List).
+	\item Vous devez indiquer quel corpus sera le corpus Target et quel corpus sera la référence. Double-cliquez sur un corpus après avoir choisi un type de corpus sur la partie droite de la fenêtre.
+	\item Une fois vos corpus assignés comme il se doit, quittez la fenêtre \texttt{Corpus Manager} (\texttt{Return To Main Window}).
+\end{itemize}
+
+À partir de cela, trouvez les mots clés de "Vingt milles lieues sous les mers" (onglet \texttt{Keyword}).
+
+\begin{enumerate}
+    \item Quels sont les 10 mots qui sont spécifiques à "Vingt milles lieues sous les mers" (par opposition aux deux autres textes) ?
+    \item Que représentent les 5 mots les plus spécifiques ?
+%    \item "Vingt milles lieues sous les mers" est écrit de manière différente des autres textes, quels sont les mots spécifiques qui peuvent illustrer cela ?
+\end{enumerate}
+\vspace{.5cm}
+\exer{\textsc{Clusters/N-grams}}
+\vspace{.5cm}
+
+Allez sur l'onglet \textsc{Clusters/N-grams}, puis :
+
+\begin{enumerate}
+    \item recherchez les clusters de taille 2 commençant par "capitaine". Remarquez-vous quelque chose de particulier ?
+    \item Quels sont les différents capitaines mentionnés dans le livre ?
+    \item comment pouvez-vous configurer l'outil dans le menu \textsc{Tool Settings} pour rendre votre recherche plus efficace ?
+    \item Utilisez cet outil pour vérifier que l'histoire se déroule en partie sous les eaux (pensez à configurer \textsc{Cluster Size}).
+    \item Allez sur l'onglet \textsc{Collocates} et trouvez les mots qui sont en collocation avec "capitaine". Y a-t-il une différence avec les clusters ?
+\end{enumerate}
+\vspace{.5cm}
+\exer{Trouver des indices pour comprendre des textes} 
+\vspace{.5cm}
+
+Dans cette partie, nous allons voir comment Antconc permet de trouver des indices dans le texte rapidement pour répondre aux deux questions :
+
+\begin{enumerate}
+	\item \textcolor{blue}{le capitaine Nemo n'est pas le héros de l'histoire. Comment pouvez-vous utiliser l'onglet \textsc{Plot} pour vérifier cette assertion ?}
+%    \item "Vingt milles lieues sous les mers" est écrit de manière différente des autres corpus, quel mot indique cela parmi les mots clés ?
+	\item \textcolor{blue}{"Vingt milles lieues sous les mers" est écrit de manière différente des autres textes, quels sont les indices qui peuvent illustrer cela ?} (observez les mots outils)
+\end{enumerate}
